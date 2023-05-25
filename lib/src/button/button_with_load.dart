@@ -13,11 +13,11 @@ class ButtonWithLoad extends StatefulWidget {
       this.title = '按钮',
       this.width,
       this.height,
-      this.backgroundColor = Colors.blue,
-      this.overlayColor = Colors.lightBlueAccent,
-      this.titleColor = Colors.white,
-      this.radius = 20,
-      this.fontSize = 40});
+      this.backgroundColor = const Color(0xFFFFC0CB),
+      this.overlayColor = const Color(0x25778899),
+      this.fontColor = Colors.white,
+      this.radius = 30,
+      this.fontSize = 60});
 
   /// 固有标题
   final String title;
@@ -38,7 +38,7 @@ class ButtonWithLoad extends StatefulWidget {
   final Color overlayColor;
 
   /// 标题颜色
-  final Color titleColor;
+  final Color fontColor;
 
   /// 按钮圆角
   final double radius;
@@ -56,34 +56,34 @@ class _ButtonWithLoadState extends State<ButtonWithLoad> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.width,
-      height: widget.height,
-      child: TextButton(
-        onPressed: () async {
-          setState(() {
-            isLoading = true;
-          });
-          await widget.func();
-          setState(() {
-            isLoading = false;
-          });
-        },
-        style: ButtonStyle(
-          maximumSize: MaterialStateProperty.all(Size(widget.width??screenUtil.adaptive(100),widget.height??screenUtil.adaptive(100))),
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                    screenUtil.adaptive(widget.radius)))),
-            overlayColor: MaterialStateProperty.all(widget.overlayColor),
-            backgroundColor:
-                MaterialStateProperty.all(widget.backgroundColor),
-            iconColor: MaterialStateProperty.all(widget.titleColor)),
-        child: isLoading
-            ? Icon(Icons.refresh, size: screenUtil.adaptive(widget.fontSize*1.3))
-            : Text(widget.title,
-                style: TextStyle(
-                    color: widget.titleColor,
-                    fontSize: screenUtil.adaptive(widget.fontSize))),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+          minWidth: widget.width != null ? screenUtil.adaptive(widget.width!) : double.infinity,
+          minHeight: screenUtil.adaptive(widget.height ?? 160)),
+      // width: ,
+      child: IntrinsicHeight(
+        child: TextButton(
+            onPressed: () async {
+              if (isLoading) {
+                return;
+              }
+              setState(() {
+                isLoading = true;
+              });
+              await widget.func();
+              setState(() {
+                isLoading = false;
+              });
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(screenUtil.adaptive(widget.radius)))),
+                backgroundColor: MaterialStateProperty.all(widget.backgroundColor),
+                overlayColor: MaterialStateProperty.all(widget.overlayColor),
+                iconColor: MaterialStateProperty.all(widget.fontColor)),
+            child: Visibility(
+                visible: isLoading,
+                child: CircularProgressIndicator(color: widget.fontColor),
+                replacement: Text(widget.title, style: TextStyle(color: widget.fontColor, fontSize: screenUtil.adaptive(widget.fontSize))))),
       ),
     );
   }

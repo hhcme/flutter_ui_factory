@@ -12,16 +12,16 @@ class AppHomeView extends HycFrameView<AppHomeLogic> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ListView(
-          children: <Widget>[
+        child: Column(
+          children: [
             SizedBox(
-              height: screenUtil.adaptive(100),
+              height: screenUtil.adaptive(200),
             ),
             ButtonWithLoad(
-              width: 100,
-              height: 100,
+              width: 500,
+              title: '登录',
               func: () async {
-                await Future.delayed(const Duration(seconds: 3));
+                await Future.delayed(const Duration(seconds: 5));
               },
             )
           ],

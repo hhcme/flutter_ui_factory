@@ -21,4 +21,4 @@ flutter:
   uses-material-design: true
 dependency_overrides:
   flutter_frame_hyc:
-    path: D:\allTest\flutter_frame_hyc
+    path: /Users/hahaha/Desktop/LoveNote/Front/package/flutter_frame_hyc
