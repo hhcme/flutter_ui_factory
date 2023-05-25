@@ -1,7 +1,6 @@
 name: flutter_ui_hyc
 description: ui库
-version: 0.0.1
-homepage:
+version: 1.0.0
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
@@ -10,10 +9,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_frame_hyc: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
 flutter:
-
+dependency_overrides:
+  flutter_frame_hyc:
+    path: D:\allTest\flutter_frame_hyc
