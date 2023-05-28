@@ -5,8 +5,7 @@ import 'package:flutter_ui_hyc/flutter_ui_hyc.dart';
 import 'logic.dart';
 
 class AppHomeView extends HycFrameView<AppHomeLogic> {
-  AppHomeView({required BuildContext context, Key? key})
-      : super(key: key, context: context, dependency: () => AppHomeLogic());
+  AppHomeView({required BuildContext context, Key? key}) : super(key: key, context: context, dependency: () => AppHomeLogic());
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +17,9 @@ class AppHomeView extends HycFrameView<AppHomeLogic> {
               height: screenUtil.adaptive(200),
             ),
             ButtonWithLoad(
-              width: 500,
               title: '登录',
               func: () async {
-                await Future.delayed(const Duration(seconds: 5));
+                await Future.delayed(const Duration(seconds: 2));
               },
             )
           ],

@@ -1,6 +1,12 @@
 buildscript {
     ext.kotlin_version = '1.7.10'
     repositories {
+        maven {
+            url 'http://mvn.mob.com/android'
+            allowInsecureProtocol = true
+        }
+//        maven { url 'https://maven.aliyun.com/repository/public' }
+//        maven { url 'https://maven.aliyun.com/repository/google' }
         google()
         mavenCentral()
     }
@@ -13,6 +19,12 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url 'http://mvn.mob.com/android'
+            allowInsecureProtocol = true
+        }
+//        maven { url 'https://maven.aliyun.com/repository/public' }
+//        maven { url 'https://maven.aliyun.com/repository/google' }
         google()
         mavenCentral()
     }

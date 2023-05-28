@@ -11,13 +11,13 @@ class ButtonWithLoad extends StatefulWidget {
       {super.key,
       required this.func,
       this.title = '按钮',
-      this.width,
-      this.height,
+      this.width = 200,
+      this.height = 100,
       this.backgroundColor = const Color(0xFFFFC0CB),
-      this.overlayColor = const Color(0x25778899),
+      this.overlayColor = const Color(0xAAFFC0CB),
       this.fontColor = Colors.white,
-      this.radius = 30,
-      this.fontSize = 60});
+      this.radius = 20,
+      this.fontSize = 50});
 
   /// 固有标题
   final String title;
@@ -26,10 +26,10 @@ class ButtonWithLoad extends StatefulWidget {
   final FutureFunc func;
 
   /// 宽
-  final double? width;
+  final double width;
 
   /// 高
-  final double? height;
+  final double height;
 
   /// 背景颜色
   final Color backgroundColor;
@@ -52,38 +52,51 @@ class ButtonWithLoad extends StatefulWidget {
 
 class _ButtonWithLoadState extends State<ButtonWithLoad> {
   /// 转圈状态
-  bool isLoading = false;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-          minWidth: widget.width != null ? screenUtil.adaptive(widget.width!) : double.infinity,
-          minHeight: screenUtil.adaptive(widget.height ?? 160)),
-      // width: ,
-      child: IntrinsicHeight(
-        child: TextButton(
-            onPressed: () async {
-              if (isLoading) {
-                return;
-              }
-              setState(() {
-                isLoading = true;
-              });
-              await widget.func();
-              setState(() {
-                isLoading = false;
-              });
-            },
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(screenUtil.adaptive(widget.radius)))),
-                backgroundColor: MaterialStateProperty.all(widget.backgroundColor),
-                overlayColor: MaterialStateProperty.all(widget.overlayColor),
-                iconColor: MaterialStateProperty.all(widget.fontColor)),
-            child: Visibility(
-                visible: isLoading,
-                child: CircularProgressIndicator(color: widget.fontColor),
-                replacement: Text(widget.title, style: TextStyle(color: widget.fontColor, fontSize: screenUtil.adaptive(widget.fontSize))))),
+    return GestureDetector(
+      onTap: () async {
+        if (_isLoading) {
+          return;
+        }
+        setState(() {
+          _isLoading = true;
+        });
+        await widget.func();
+        setState(() {
+          _isLoading = false;
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: screenUtil.adaptive(widget.width),
+        height: screenUtil.adaptive(widget.height),
+        padding: EdgeInsets.only(left: screenUtil.adaptive(15), right: screenUtil.adaptive(15)),
+        decoration: BoxDecoration(
+          color: _isLoading ? widget.overlayColor : widget.backgroundColor,
+          borderRadius: BorderRadius.circular(screenUtil.adaptive(widget.radius)),
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: _isLoading ? 1 : 0,
+                child: SizedBox(
+                  width: screenUtil.adaptive((widget.height) * 0.6),
+                  height: screenUtil.adaptive((widget.height) * 0.6),
+                  child: CircularProgressIndicator(color: widget.fontColor, strokeWidth: screenUtil.adaptive(10)),
+                )),
+            Center(
+              child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: _isLoading ? 0 : 1,
+                  child: Text(widget.title, style: TextStyle(color: widget.fontColor, fontSize: screenUtil.adaptive(widget.fontSize)))),
+            ),
+          ],
+        ),
       ),
     );
   }
